@@ -21,22 +21,56 @@ Automatizar o mapeamento e roteirização logística de trechos críticos de veg
 
 ---
 
-## Funcionalidades do App (MVP)
-1. **Listagem de Rotas Automatizadas (Home):** Exibição dos clusters de trabalho gerados pelo algoritmo K-means, ordenados pelo nível de prioridade (Relevância Logística).
-2. **Visualização de Detalhes da Rota:** Exibição do trajeto sequencial que a equipe deve seguir, mostrando os trechos críticos agrupados para aquele dia.
-3. **Ficha de Criticidade do Trecho:** Detalhamento de um ponto específico da rota, exibindo os dados automáticos que geraram o alerta (Índice NDVI do satélite, validação do sensor IoT e multiplicadores de risco como proximidade de placas ou curvas).
-4. **Status de Execução:** Permite à equipe de campo marcar os trechos da rota como "Concluídos", atualizando o sistema em tempo real.
+## Escopo e Funcionalidades da Sprint 2 (MVP Funcional)
+Para fins de demonstração técnica nesta sprint e validação do fluxo, o aplicativo simula a entrada de dados (que no futuro virá de sensores/satélites) através de um fluxo funcional completo contendo:
+1. **Listagem de Ocorrências (Trechos Críticos):** Visualização dos pontos que necessitam de intervenção, renderizados a partir de um estado dinâmico.
+2. **Cadastro de Ocorrência:** Formulário para registrar um novo ponto de risco (rodovia, KM, fator de risco e nível de criticidade), adicionando-o à lista em tempo real.
+3. **Detalhes da Ocorrência:** Tela de visualização focada nos dados específicos de um trecho selecionado na lista.
 
 ---
 
 ## Estrutura Técnica do Projeto
-O projeto foi inicializado utilizando a stack obrigatória: **React Native com Expo** e **TypeScript**.
-
 ```text
-src/
-├── components/       # Componentes reutilizáveis (Cards de rota, Botões de status, Mapas)
-├── screens/          # Telas principais do aplicativo
-│   ├── Home.tsx           # Lista de rotas/clusters gerados
-│   ├── DetalheRota.tsx     # Trajeto intra-cluster e sequência de trechos
-│   └── DetalheTrecho.tsx   # Dados de satélite/sensor do ponto selecionado
-└── types/            # Tipagens do TypeScript (Interfaces para Rotas, Trechos, Criticidade)
+challenge-sprint-nextgen-green-control/
+├── src/
+│   ├── components/       # Componentes visuais reutilizáveis
+│   │   ├── OcorrenciaCard.tsx
+│   │   └── index.ts      
+│   ├── data/             # Dados simulados da aplicação
+│   │   └── mock.ts
+│   ├── screens/          # Telas que compõem o fluxo do MVP
+│   │   ├── ListaScreen.tsx
+│   │   ├── CadastroScreen.tsx
+│   │   ├── DetalheScreen.tsx
+│   │   └── index.ts
+│   └── types/            # Tipagens globais do TypeScript
+│       └── index.ts
+├── App.tsx               # Arquivo principal e gerenciador de estado (Rotas)
+```
+---
+
+## Sprint 2: Como Executar o App
+
+Este projeto foi construído utilizando React Native com o framework Expo. Para visualizar o aplicativo rodando em sua máquina, siga os passos abaixo:
+
+### Pré-requisitos
+* Ter o [Node.js](https://nodejs.org/) instalado em seu computador.
+* Ter o aplicativo **Expo Go** instalado em seu dispositivo móvel (Android ou iOS).
+
+### Passo a Passo
+1. Clone o repositório em sua máquina.
+2. Abra o terminal na pasta raiz do projeto.
+3. Execute o comando `npm install` para instalar todas as dependências.
+4. Execute o comando `npx expo start` para iniciar o servidor do Expo.
+5. Escaneie o QR Code exibido no terminal utilizando o aplicativo **Expo Go**.
+
+### O Que o App Faz Nesta Versão (Fluxo MVP)
+Através de navegação condicional controlada por estado, o app gerencia o fluxo de ponta a ponta exigido para o MVP:
+* **Visualizar:** Uma lista de trechos rodoviários críticos ativos, renderizados a partir do estado de forma componentizada através do `OcorrenciaCard`.
+* **Cadastrar:** Um formulário funcional para adicionar um novo ponto de risco (inserindo rodovia, KM, fatores agravantes e nível de risco). Os dados atualizam a lista dinamicamente via `useState`.
+* **Detalhar:** Permite selecionar um trecho específico da lista para visualizar suas informações completas em uma tela dedicada.
+
+### Como os Dados Estão Mockados
+Atualmente, o app utiliza uma simulação de dados fixa (Array) gerenciada dinamicamente pelo `useState` no componente central (`App.tsx`) e distribuída via props para as telas mapeadas na pasta `src/screens/`. 
+
+A tipagem das informações (`Ocorrencia`) foi configurada estritamente via TypeScript no arquivo `src/types/index.ts`, estruturando os campos essenciais (rodovia, KM, nível de risco e fatores de risco). Essa estrutura foi desenhada para servir de base para a integração definitiva com os indicadores automatizados de satélite (NDVI) e sensores analíticos nas próximas fases. Os dados iniciais de inicialização do app encontram-se isolados no arquivo `src/data/mock.ts`.
