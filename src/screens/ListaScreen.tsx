@@ -1,31 +1,35 @@
-import { Button, FlatList, StyleSheet, Text, View } from 'react-native';
-import { OcorrenciaCard } from '../components';
+import React from 'react';
+import { View, Text, Button, FlatList, StyleSheet } from 'react-native';
 import { Ocorrencia } from '../types';
+import { OcorrenciaCard } from '../components';
 
 type Props = {
-  trechos: Ocorrencia[];
+  ocorrencias: Ocorrencia[];
   setTelaAtual: (tela: "lista" | "cadastro" | "detalhe") => void;
-  setTrechoSelecionado: (trecho: Ocorrencia) => void;
+  setOcorrenciaSelecionada: (ocorrencia: Ocorrencia) => void;
 };
 
-export default function ListaScreen({ trechos, setTelaAtual, setTrechoSelecionado }: Props) {
+export default function ListaScreen({ ocorrencias, setTelaAtual, setOcorrenciaSelecionada }: Props) {
   return (
     <View style={styles.tela}>
-      <Text style={styles.header}>Monitoramento de Vegetação</Text>
-      <Button title="+ Novo Registro de Campo" onPress={() => setTelaAtual("cadastro")} />
+      <Text style={styles.header}>Ocorrências Rodoviárias</Text>
+      <Button title="+ Nova Ocorrência" onPress={() => setTelaAtual("cadastro")} color="#1E88E5" />
       <FlatList
-        data={trechos}
+        data={ocorrencias}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <OcorrenciaCard 
-            trecho={item} 
+            ocorrencia={item} 
             onPress={() => {
-              setTrechoSelecionado(item);
+              setOcorrenciaSelecionada(item);
               setTelaAtual("detalhe");
             }} 
           />
         )}
-        style={{ marginTop: 15 }}
+        contentContainerStyle={{ paddingBottom: 20, paddingTop: 10 }}
+        ListEmptyComponent={
+          <Text style={styles.vazio}>Nenhuma ocorrência registrada.</Text>
+        }
       />
     </View>
   );
@@ -33,5 +37,6 @@ export default function ListaScreen({ trechos, setTelaAtual, setTrechoSelecionad
 
 const styles = StyleSheet.create({
   tela: { flex: 1 },
-  header: { fontSize: 22, fontWeight: 'bold', marginBottom: 20, textAlign: 'center' },
+  header: { fontSize: 22, fontWeight: 'bold', marginBottom: 15, textAlign: 'center', color: '#111' },
+  vazio: { textAlign: 'center', marginTop: 30, color: '#888' }
 });

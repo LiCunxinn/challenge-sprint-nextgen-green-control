@@ -1,42 +1,56 @@
-import { useState } from 'react';
-import { StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, ActivityIndicator, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { mockTrechos } from './src/data/mock';
 import { Ocorrencia } from './src/types';
-
-// Importando as telas componentizadas da pasta screens
-import { CadastroScreen, DetalheScreen, ListaScreen } from './src/screens';
+import { storageService } from './src/services';
+import { ListaScreen, CadastroScreen, DetalheScreen } from './src/screens';
 
 export default function App() {
-  // Estado Global do App
-  const [trechos, setTrechos] = useState<Ocorrencia[]>(mockTrechos);
+  const [ocorrencias, setOcorrencias] = useState<Ocorrencia[]>([]);
   const [telaAtual, setTelaAtual] = useState<"lista" | "cadastro" | "detalhe">("lista");
-  const [trechoSelecionado, setTrechoSelecionado] = useState<Ocorrencia | null>(null);
+  const [ocorrenciaSelecionada, setOcorrenciaSelecionada] = useState<Ocorrencia | null>(null);
+  const [carregando, setCarregando] = useState(true);
+
+  useEffect(() => {
+    async function carregarDados() {
+      const dadosSalvos = await storageService.getOcorrencias();
+      setOcorrencias(dadosSalvos);
+      setCarregando(false);
+    }
+    carregarDados();
+  }, []);
 
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
-        {telaAtual === "lista" && (
-          <ListaScreen 
-            trechos={trechos} 
-            setTelaAtual={setTelaAtual} 
-            setTrechoSelecionado={setTrechoSelecionado} 
-          />
-        )}
+        {carregando ? (
+          <View style={styles.centralizado}>
+            <ActivityIndicator size="large" color="#1E88E5" />
+          </View>
+        ) : (
+          <>
+            {telaAtual === "lista" && (
+              <ListaScreen 
+                ocorrencias={ocorrencias} 
+                setTelaAtual={setTelaAtual} 
+                setOcorrenciaSelecionada={setOcorrenciaSelecionada} 
+              />
+            )}
 
-        {telaAtual === "cadastro" && (
-          <CadastroScreen 
-            trechos={trechos} 
-            setTrechos={setTrechos} 
-            setTelaAtual={setTelaAtual} 
-          />
-        )}
+            {telaAtual === "cadastro" && (
+              <CadastroScreen 
+                onOcorrenciaSalva={(novas) => setOcorrencias(novas)} 
+                setTelaAtual={setTelaAtual} 
+              />
+            )}
 
-        {telaAtual === "detalhe" && trechoSelecionado && (
-          <DetalheScreen 
-            trecho={trechoSelecionado} 
-            setTelaAtual={setTelaAtual} 
-          />
+            {telaAtual === "detalhe" && ocorrenciaSelecionada && (
+              <DetalheScreen 
+                ocorrencia={ocorrenciaSelecionada} 
+                setTelaAtual={setTelaAtual} 
+              />
+            )}
+          </>
         )}
       </SafeAreaView>
     </SafeAreaProvider>
@@ -44,5 +58,6 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f5f5f5', padding: 20, paddingTop: 50 },
+  container: { flex: 1, backgroundColor: '#F5F5F5', paddingHorizontal: 16, paddingTop: 10 },
+  centralizado: { flex: 1, justifyContent: 'center', alignItems: 'center' }
 });
