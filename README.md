@@ -1,5 +1,16 @@
 # Sistema de Automação de Rotas e Monitoramento Preditivo de Vegetação Rodoviária (Motiva)
 
+## Integrantes do Grupo
+* **Arthur Marangoni Furlan** - RM: 564665
+* **Guilherme Spranger dos Santos** - RM: 564059
+* **Gustavo Lemos Diogenes** - RM: 565579
+* **Gustavo Sartori Shibata Grigoletto** - RM: 565726
+* **Pedro Paulo Barbosa Ross** - RM: 563038
+* **Samuel De Souza Jorge** - RM: 558966
+* **Vinicius Macedo Carvalho** - RM: 563791
+
+---
+
 ## O Problema
 Atualmente, o monitoramento do crescimento da vegetação nas rodovias é realizado pela Motiva de forma analógica e ineficiente. Os níveis de vegetação são coletados física e visualmente por operadores em campo e consolidados manualmente em planilhas. A partir desses dados estáticos, o supervisor precisa analisar linha por linha e mapear as rotas de alta prioridade para despachar as equipes de roçada. 
 
@@ -104,3 +115,11 @@ export type Ocorrencia = {
 ### Como a Persistência Funciona
 * **Camada de Serviço (`src/services/storageService.ts`):** Centraliza as funções de leitura (`getOcorrencias`) e escrita (`saveOcorrencia`) no `@react-native-async-storage/async-storage`.
 * **Carga Inicial (Seed):** O arquivo `src/data/mock.ts` é utilizado **apenas na primeira inicialização do app**. Quando o `storageService` detecta que o banco local está vazio, ele popula o armazenamento com as ocorrências de teste. A partir do primeiro cadastro, o `AsyncStorage` passa a ser a fonte primária e definitiva de dados.
+
+---
+
+## Demonstração em Vídeo
+
+Assista à apresentação completa do projeto, explicação da persistência de dados e demonstração do fluxo funcionando no YouTube:
+
+[Clique aqui para assistir ao vídeo do projeto no YouTube](LINK_DO_SEU_VIDEO_AQUI)
