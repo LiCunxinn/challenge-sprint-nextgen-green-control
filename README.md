@@ -122,4 +122,4 @@ export type Ocorrencia = {
 
 Assista à apresentação completa do projeto, explicação da persistência de dados e demonstração do fluxo funcionando no YouTube:
 
-[Clique aqui para assistir ao vídeo do projeto no YouTube](LINK_DO_SEU_VIDEO_AQUI)
+[Clique aqui para assistir ao vídeo do projeto no YouTube](https://youtu.be/xEThkjHpJbA)
